@@ -3,6 +3,8 @@ package com.example.hotumit.tommvpstructure.main_activity;
 
 
 import com.example.hotumit.tommvpstructure.model.Notice;
+import com.example.hotumit.tommvpstructure.model.dao.PhotoItemDao;
+import com.example.hotumit.tommvpstructure.model.dao.PhotoListManager;
 
 import java.util.ArrayList;
 
@@ -35,7 +37,7 @@ public interface MainContract {
 
         void hideProgress();
 
-        void setDataToRecyclerView(ArrayList<Notice> noticeArrayList);
+        void setDataToRecyclerView(ArrayList<PhotoItemDao> noticeArrayList);
 
         void onResponseFailure(Throwable throwable);
 
@@ -47,10 +49,13 @@ public interface MainContract {
     interface GetNoticeIntractor {
 
         interface OnFinishedListener {
-            void onFinished(ArrayList<Notice> noticeArrayList);
+            void onFinished(ArrayList<PhotoItemDao> noticeArrayList);
+            void onFinishedLoadNewer(ArrayList<PhotoItemDao> noticeArrayList);
+       /*     void onRefreshPhoto(ArrayList<PhotoListManager> loadNewPhoto);*/
             void onFailure(Throwable t);
         }
 
         void getNoticeArrayList(OnFinishedListener onFinishedListener);
+        void getNoticeArrayListNewer(OnFinishedListener onFinishedListener);
     }
 }

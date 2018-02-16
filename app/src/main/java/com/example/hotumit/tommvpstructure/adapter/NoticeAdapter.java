@@ -5,21 +5,28 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.hotumit.tommvpstructure.R;
 import com.example.hotumit.tommvpstructure.main_activity.RecyclerItemClickListener;
 import com.example.hotumit.tommvpstructure.model.Notice;
+import com.example.hotumit.tommvpstructure.model.dao.PhotoItemDao;
+import com.squareup.picasso.Picasso;
+
 
 import java.util.ArrayList;
 
 public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.EmployeeViewHolder> {
 
-    private ArrayList<Notice> dataList;
+    private ArrayList<PhotoItemDao> dataList;
     private RecyclerItemClickListener recyclerItemClickListener;
 
-    public NoticeAdapter(ArrayList<Notice> dataList , RecyclerItemClickListener recyclerItemClickListener) {
+
+    public NoticeAdapter(ArrayList<PhotoItemDao> dataList , RecyclerItemClickListener recyclerItemClickListener) {
         this.dataList = dataList;
         this.recyclerItemClickListener = recyclerItemClickListener;
     }
@@ -34,9 +41,13 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.EmployeeVi
 
     @Override
     public void onBindViewHolder(EmployeeViewHolder holder, @SuppressLint("RecyclerView") final int position) {
-        holder.txtNoticeTitle.setText(dataList.get(position).getTitle());
-        holder.txtNoticeBrief.setText(dataList.get(position).getBrief());
-        holder.txtNoticeFilePath.setText(dataList.get(position).getFileSource());
+        holder.txtNoticeTitle.setText(dataList.get(position).getUsername());
+        holder.txtNoticeBrief.setText(dataList.get(position).getCaption());
+        holder.txtNoticeFilePath.setText(dataList.get(position).getIso());
+        Glide
+                .with(holder.imageView.getContext())
+                .load(dataList.get(position).getImageUrl())
+                .into(holder.imageView);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,12 +65,14 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.EmployeeVi
     class EmployeeViewHolder extends RecyclerView.ViewHolder {
 
         TextView txtNoticeTitle, txtNoticeBrief, txtNoticeFilePath;
+        ImageView imageView;
 
         EmployeeViewHolder(View itemView) {
             super(itemView);
             txtNoticeTitle =  itemView.findViewById(R.id.txt_notice_title);
             txtNoticeBrief =  itemView.findViewById(R.id.txt_notice_brief);
             txtNoticeFilePath =  itemView.findViewById(R.id.txt_notice_file_path);
+            imageView =  itemView.findViewById(R.id.imgview);
 
         }
     }

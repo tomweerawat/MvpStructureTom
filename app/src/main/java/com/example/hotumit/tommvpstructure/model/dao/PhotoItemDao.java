@@ -25,7 +25,7 @@ public class PhotoItemDao implements Parcelable {
     private String link;
 
     @Expose
-    @SerializedName("link")
+    @SerializedName("image_url")
     private String imageUrl;
 
     @Expose

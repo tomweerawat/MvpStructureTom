@@ -4,6 +4,7 @@ package com.example.hotumit.tommvpstructure.my_interface;
 
 import com.example.hotumit.tommvpstructure.model.Notice;
 import com.example.hotumit.tommvpstructure.model.NoticeList;
+import com.example.hotumit.tommvpstructure.model.dao.PhotoItemCollectionDao;
 
 import java.util.List;
 import java.util.Map;
@@ -29,6 +30,12 @@ public interface GetNoticeDataService {
     @GET("bins/1bsqcn/")
     Call<NoticeList> getNoticeData();
 
+
+    @POST("list")
+    Call <PhotoItemCollectionDao> loadPhotoList();
+
+    @POST("list/after/{id}")
+    Call <PhotoItemCollectionDao> loadPhotoListAfterId(@Path("id")int id);
 
 
     /**
@@ -135,6 +142,6 @@ public interface GetNoticeDataService {
      * If the value is null, the header will be omitted. Otherwise, toString will be called on the value, and the result used.
      * */
     @GET("notice")
-    Call<Notice> getNoticeUsingHeader(@Header("Authorization") String authorization);
+    Call<  Notice> getNoticeUsingHeader(@Header("Authorization") String authorization);
 
 }

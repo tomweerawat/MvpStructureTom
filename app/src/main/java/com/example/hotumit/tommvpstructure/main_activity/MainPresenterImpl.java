@@ -3,6 +3,7 @@ package com.example.hotumit.tommvpstructure.main_activity;
 
 
 import com.example.hotumit.tommvpstructure.model.Notice;
+import com.example.hotumit.tommvpstructure.model.dao.PhotoItemDao;
 
 import java.util.ArrayList;
 
@@ -33,7 +34,8 @@ public class MainPresenterImpl implements MainContract.presenter, MainContract.G
         if(mainView != null){
             mainView.showProgress();
         }
-        getNoticeIntractor.getNoticeArrayList(this);
+ /*       getNoticeIntractor.getNoticeArrayList(this);*/
+        getNoticeIntractor.getNoticeArrayListNewer(this);
 
     }
 
@@ -44,7 +46,15 @@ public class MainPresenterImpl implements MainContract.presenter, MainContract.G
 
 
     @Override
-    public void onFinished(ArrayList<Notice> noticeArrayList) {
+    public void onFinished(ArrayList<PhotoItemDao> noticeArrayList) {
+        if(mainView != null){
+            mainView.setDataToRecyclerView(noticeArrayList);
+            mainView.hideProgress();
+        }
+    }
+
+    @Override
+    public void onFinishedLoadNewer(ArrayList<PhotoItemDao> noticeArrayList) {
         if(mainView != null){
             mainView.setDataToRecyclerView(noticeArrayList);
             mainView.hideProgress();
