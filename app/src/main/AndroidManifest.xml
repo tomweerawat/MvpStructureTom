@@ -19,6 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".main_activity.MainActivity"/>
+        <activity android:name=".main_activity.moreinfo_fragment.MoreinfoFragment"/>
     </application>
 
 </manifest>

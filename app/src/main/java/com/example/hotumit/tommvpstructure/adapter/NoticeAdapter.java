@@ -46,6 +46,7 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.EmployeeVi
         holder.txtNoticeFilePath.setText(dataList.get(position).getIso());
         Glide
                 .with(holder.imageView.getContext())
+                /*.load(dataList.get(position).getImageUrl().get(0))*/
                 .load(dataList.get(position).getImageUrl())
                 .into(holder.imageView);
 

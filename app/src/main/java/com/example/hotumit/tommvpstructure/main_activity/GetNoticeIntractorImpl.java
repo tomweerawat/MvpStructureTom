@@ -70,8 +70,8 @@ public class GetNoticeIntractorImpl implements MainContract.GetNoticeIntractor {
             public void onResponse(Call<PhotoItemCollectionDao> call, Response<PhotoItemCollectionDao> response) {
                 PhotoItemCollectionDao dao = response.body().getDao();
                 /*photoItemCollectionDao.setDao(dao);*/
-                photoItemCollectionDao.setDao(dao);
-                photoItemCollectionDao.insertDaoTopPosition(dao);
+               /* photoItemCollectionDao.setDao(dao);
+                photoItemCollectionDao.insertDaoTopPosition(dao);*/
                 onFinishedListener.onFinishedLoadNewer(response.body().getData());
 
 
@@ -81,6 +81,7 @@ public class GetNoticeIntractorImpl implements MainContract.GetNoticeIntractor {
 
             @Override
             public void onFailure(Call<PhotoItemCollectionDao> call, Throwable t) {
+                Log.e("MyError",""+t.getMessage())  ;
                 onFinishedListener.onFailure(t);
             }
         });

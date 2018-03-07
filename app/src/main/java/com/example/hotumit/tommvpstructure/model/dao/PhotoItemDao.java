@@ -14,7 +14,9 @@ import java.util.List;
  * Created by HOTUM IT on 12/1/2561.
  */
 
-public class PhotoItemDao implements Parcelable {
+public class
+
+PhotoItemDao implements Parcelable {
 
     @Expose
     @SerializedName("id")
@@ -27,6 +29,7 @@ public class PhotoItemDao implements Parcelable {
     @Expose
     @SerializedName("image_url")
     private String imageUrl;
+   /* private List<String> imageUrl = new ArrayList<>();*/
 
     @Expose
     @SerializedName("caption")
@@ -72,13 +75,36 @@ public class PhotoItemDao implements Parcelable {
     @SerializedName("shutter_speed")
     private String shutterSpeed;
 
+/*
+    public List<String> getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(List<String> imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+*/
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     @Expose
     @SerializedName("aperture")
+
     private String aperture;
 
+
+
     protected PhotoItemDao(Parcel in) {
+
         id = in.readInt();
         link = in.readString();
+     /*   imageUrl = in.createStringArrayList();*/
         imageUrl = in.readString();
         caption = in.readString();
         user_id = in.readInt();
@@ -121,13 +147,7 @@ public class PhotoItemDao implements Parcelable {
         this.link = link;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
 
     public String getCaption() {
         return caption;
@@ -234,6 +254,7 @@ public class PhotoItemDao implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
         dest.writeString(link);
+   /*     dest.writeStringList(imageUrl);*/
         dest.writeString(imageUrl);
         dest.writeString(caption);
         dest.writeInt(user_id);

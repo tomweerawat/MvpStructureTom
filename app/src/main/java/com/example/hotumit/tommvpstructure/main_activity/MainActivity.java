@@ -1,5 +1,6 @@
 package com.example.hotumit.tommvpstructure.main_activity;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.hotumit.tommvpstructure.R;
 import com.example.hotumit.tommvpstructure.adapter.NoticeAdapter;
+import com.example.hotumit.tommvpstructure.main_activity.moreinfo_fragment.MoreinfoFragment;
 import com.example.hotumit.tommvpstructure.model.Notice;
 import com.example.hotumit.tommvpstructure.model.dao.PhotoItemDao;
 
@@ -128,9 +130,12 @@ public class MainActivity extends AppCompatActivity implements MainContract.Main
         @Override
         public void onItemClick(PhotoItemDao notice) {
 
-            Toast.makeText(MainActivity.this,
+          /*  Toast.makeText(MainActivity.this,
                     "List title:  " + notice.getCamera(),
-                    Toast.LENGTH_LONG).show();
+                    Toast.LENGTH_LONG).show();*/
+            Intent i = new Intent(MainActivity.this, MoreinfoFragment.class);
+            i.putExtra("dao",notice);
+            startActivity(i);
 
         }
     };
