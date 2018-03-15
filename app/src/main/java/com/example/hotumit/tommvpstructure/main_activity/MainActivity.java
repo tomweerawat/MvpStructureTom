@@ -21,6 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 
+import com.example.hotumit.tommvpstructure.MoreinfoActivity;
 import com.example.hotumit.tommvpstructure.R;
 import com.example.hotumit.tommvpstructure.adapter.NoticeAdapter;
 import com.example.hotumit.tommvpstructure.main_activity.moreinfo_fragment.MoreinfoFragment;
@@ -133,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.Main
           /*  Toast.makeText(MainActivity.this,
                     "List title:  " + notice.getCamera(),
                     Toast.LENGTH_LONG).show();*/
-            Intent i = new Intent(MainActivity.this, MoreinfoFragment.class);
+            Intent i = new Intent(MainActivity.this, MoreinfoActivity.class);
             i.putExtra("dao",notice);
             startActivity(i);
 
