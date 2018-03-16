@@ -1,6 +1,9 @@
 package com.example.hotumit.tommvpstructure.main_activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,13 +14,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -27,7 +33,13 @@ import com.example.hotumit.tommvpstructure.adapter.NoticeAdapter;
 import com.example.hotumit.tommvpstructure.main_activity.moreinfo_fragment.MoreinfoFragment;
 import com.example.hotumit.tommvpstructure.model.Notice;
 import com.example.hotumit.tommvpstructure.model.dao.PhotoItemDao;
+import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements MainContract.MainView {
@@ -38,6 +50,11 @@ public class MainActivity extends AppCompatActivity implements MainContract.Main
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private MainContract.presenter presenter;
+    private ImageView img;
+    private TextView user_email,user_name;
+    private String jsondata;
+    JSONObject response,profile_pic_url,profile_pic_data;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +63,56 @@ public class MainActivity extends AppCompatActivity implements MainContract.Main
         initializeToolbarAndRecyclerView();
         initProgressBar();
         refresh();
+        debugHashKey();
+        bindview();
 
-
+        Intent intent = getIntent();
+        jsondata = intent.getStringExtra("userProfile");
+        Log.e("Jsondata", jsondata);
+        getFacebbokData();
         presenter = new MainPresenterImpl(this, new GetNoticeIntractorImpl());
         presenter.requestDataFromServer();
 
+
+    }
+
+    private void bindview() {
+        user_email = (TextView) findViewById(R.id.tvfacebook);
+        user_name = (TextView) findViewById(R.id.userfacebook);
+        img = (ImageView) findViewById(R.id.imgnav);
+    }
+
+    private void getFacebbokData() {
+        try {
+            response = new JSONObject(jsondata);
+            user_name.setText(response.get("name").toString());
+            user_email.setText(response.get("email").toString());
+            profile_pic_data = new JSONObject(response.get("picture").toString());
+            profile_pic_url = new JSONObject(profile_pic_data.getString("data"));
+            Picasso.with(this).load(profile_pic_url.getString("url"))
+                    .into(img);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void debugHashKey() {
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(
+                    "com.example.hotumit.tommvpstructure",
+                    PackageManager.GET_SIGNATURES);
+            for (android.content.pm.Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.e("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+
+        } catch (NoSuchAlgorithmException e) {
+
+        }
     }
 
     private void refresh() {
@@ -71,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.Main
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.swipLayoutRefresh);
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipLayoutRefresh);
         recyclerView = findViewById(R.id.recycler_view_employee_list);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
         recyclerView.setLayoutManager(layoutManager);
@@ -82,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.Main
 
     /**
      * Initializing progressbar programmatically
-     * */
+     */
     private void initProgressBar() {
         progressBar = new ProgressBar(this, null, android.R.attr.progressBarStyleLarge);
         progressBar.setIndeterminate(true);
@@ -123,10 +185,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.Main
     }
 
 
-
     /**
      * RecyclerItem click event listener
-     * */
+     */
     private RecyclerItemClickListener recyclerItemClickListener = new RecyclerItemClickListener() {
         @Override
         public void onItemClick(PhotoItemDao notice) {
@@ -135,7 +196,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.Main
                     "List title:  " + notice.getCamera(),
                     Toast.LENGTH_LONG).show();*/
             Intent i = new Intent(MainActivity.this, MoreinfoActivity.class);
-            i.putExtra("dao",notice);
+            i.putExtra("dao", notice);
             startActivity(i);
 
         }
@@ -157,7 +218,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.Main
     @Override
     public void setDataToRecyclerView(ArrayList<PhotoItemDao> noticeArrayList) {
 
-        NoticeAdapter adapter = new NoticeAdapter(noticeArrayList , recyclerItemClickListener);
+        NoticeAdapter adapter = new NoticeAdapter(noticeArrayList, recyclerItemClickListener);
         recyclerView.setAdapter(adapter);
 
     }
@@ -168,7 +229,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.Main
                 "Something went wrong...Error message: " + throwable.getMessage(),
                 Toast.LENGTH_LONG).show();
 
-        Log.e("Error","Error"+throwable.getMessage());
+        Log.e("Error", "Error" + throwable.getMessage());
 
     }
 
@@ -199,7 +260,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.Main
         if (id == R.id.action_refresh) {
             presenter.onRefreshButtonClick();
         }
-        if(mDrawerToggle.onOptionsItemSelected(item)) {
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
         return super.onOptionsItemSelected(item);

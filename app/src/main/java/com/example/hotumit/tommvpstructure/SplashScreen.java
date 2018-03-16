@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.example.hotumit.tommvpstructure.facebook.activity.FacebookActivityLogin;
 import com.example.hotumit.tommvpstructure.main_activity.MainActivity;
 
 /**
@@ -29,7 +30,7 @@ public class SplashScreen extends AppCompatActivity {
 
         runnable = new Runnable() {
             public void run() {
-                Intent intent = new Intent(SplashScreen.this, MainActivity.class);
+                Intent intent = new Intent(SplashScreen.this, FacebookActivityLogin.class);
                 startActivity(intent);
                 finish();
             }

@@ -4,4 +4,9 @@
     <string name="action_refresh">Refresh</string>
     <string name="open_drawer">Open Menu</string>
     <string name="close_drawer">Close Menu</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="facebook_app_id">175474139862587</string>
+    <string name="fb_login_protocol_scheme">fb175474139862587</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

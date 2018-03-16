@@ -18,6 +18,10 @@ public class MoreinfoActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private Toolbar toolbar;
     private TabLayout tabLayout;
+    final int[] ICONS = new int[]{
+            R.drawable.ic_trending_up_black_24dp,
+            R.drawable.ic_shopping_cart_black_24dp,
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +35,17 @@ public class MoreinfoActivity extends AppCompatActivity {
                     .add(R.id.content, MoreinfoFragment.newInstance(dao))
                     .commit();
         }*/
+        tabLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                tabLayout.setupWithViewPager(viewPager);
+                tabLayout.getTabAt(0).setIcon(ICONS[0]);
+                tabLayout.getTabAt(1).setIcon(ICONS[1]);
+              /*  tabLayout.getTabAt(2).setIcon(tabIcons[2]);*/
+
+            }
+        });
+
     }
 
     private void initview() {
@@ -46,9 +61,8 @@ public class MoreinfoActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new MoreinfoFragment(), "ONE");
-        adapter.addFragment(new MoreinfoFragment(), "TWO");
-        adapter.addFragment(new MoreinfoFragment(), "THREE");
+        adapter.addFragment(new MoreinfoFragment(), "");
+        adapter.addFragment(new MoreinfoFragment(), "");
         viewPager.setAdapter(adapter);
     }
 
@@ -63,9 +77,9 @@ public class MoreinfoActivity extends AppCompatActivity {
         }
     }
 
-    @Override
+   /* @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main,menu);
         return true;
-    }
+    }*/
 }
